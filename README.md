@@ -1,4 +1,4 @@
-### ID1021 - en överblick
+### ID1021 - Algoritmer & Datastrukturer
 
 1. #### Introduktion
 2. #### HP35 
