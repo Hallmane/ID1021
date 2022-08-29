@@ -9,4 +9,5 @@ ___
 ___        
 ####
 1.  Random Access 
+    Find accuracy of the java runtime system System.nanoTime (Go: https://pkg.go.dev/time#Nanosecond)
 
