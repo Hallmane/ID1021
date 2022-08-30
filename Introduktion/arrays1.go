@@ -19,7 +19,6 @@ func array_access_time(loops int, sliceSize int) {
     )
 
     slice := make([]int, sliceSize)
-    
     var r4nd = rand.Intn(sliceSize)
     var sum int = 0
 
@@ -32,7 +31,8 @@ func array_access_time(loops int, sliceSize int) {
 	mean = float64(total) / float64(loops)
 	fmt.Printf("mean resolution: %g ns\n", mean)
 }
-func single_read_acces_time(n int) (diff time.Duration) {
+
+func single_read_access_time(n int) (diff time.Duration) {
     var sum int = 0
     var r4nd = rand.Intn(n)
 
