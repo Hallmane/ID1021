@@ -12,20 +12,27 @@ var (
     slice2 = make([]int, 100000)
 )
 
-func array_access_time(loops int, sliceSize int) {
+func array_access_time(loops int, n int) {
 	var (
         total time.Duration
 	    mean float64
     )
 
-    slice := make([]int, sliceSize)
-    var r4nd = rand.Intn(sliceSize)
+    slice := make([]int, n)
+    
+    for i:=0; i<n; i++ {
+        slice[i] = i
+    }
+
+
+    var r4nd = rand.Intn(n)
     var sum int = 0
 
 	for i := 0; i < loops; i++ {
         t0 := time.Now()
 		sum += slice[r4nd]
 		total += time.Now().Sub(t0)
+        r4nd = rand.Intn(n)
 	}
 
 	mean = float64(total) / float64(loops)
@@ -42,8 +49,15 @@ func single_read_access_time(n int) (diff time.Duration) {
 }
 
 func main() {
-
-	array_access_time(10000, 1000000)
+    var smallSize, mediumSize, largeSize, largestSize  = 100, 10000, 1000000, 100000000
+    fmt.Printf("small size array: ")
+	array_access_time(100, smallSize)
+    fmt.Printf("medium size array: ")
+	array_access_time(100, mediumSize)
+    fmt.Printf("large size array: ")
+	array_access_time(100, largeSize)
+    fmt.Printf("largest size array: ")
+	array_access_time(100, largestSize)
 
 }
 

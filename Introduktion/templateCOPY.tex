@@ -2,31 +2,12 @@
 
 \usepackage[utf8]{inputenc}
 
-\usepackage{listings}
-\usepackage{color}
-
-\definecolor{dkgreen}{rgb}{0,0.6,0}
-\definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
-
-\lstset{frame=tb,
-  language=Java,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  breaklines=true,
-  breakatwhitespace=true,
-  tabsize=3
-}
-
-
+\usepackage{minted}
 
 \begin{document}
 
 \title{
-    \textbf{Arrays and Performance}
+    \textbf{"Arrays" & Performance}
 }
 \author{Willam Eriksson - werik@kth.se}
 \date{Spring Fall 2022}
@@ -60,15 +41,15 @@ of course have subsections etc.
 
 \subsection*{inserting code}
 
-Code snippets are included using the package {\tt lstlisting}. If you
+Code snippets are included using the package {\tt minted}. If you
 want to include a program statement in running text you can do this
 using for example teletype-text: {\tt List.sort()}.
 
-\begin{lstlisting}{java}
+\begin{minted}{java}
   for (int i = 0; i < 100; i++){
     sum += i;
   }
-\end{lstlisting}
+\end{minted}
 
 The reports that you hand in should be four pages long - but not four
 pages of code! Use code snippets where you want to describe how things
