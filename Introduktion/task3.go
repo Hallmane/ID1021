@@ -6,9 +6,9 @@ import (
     "time"
 )
 
-func key_value_time(key_len int, value_len int) (float64){
+func key_value_time(key_len int, value_len int) (float64, int){
+    rand.Seed(time.Now().UTC().UnixNano())
 	var (
-        //total time.Duration
         keys = make([]int, key_len)
         values = make([]int, value_len)
         sum int = 0
@@ -29,220 +29,32 @@ func key_value_time(key_len int, value_len int) (float64){
             for v := 0; v < value_len; v++ {
                 if values[v] == key {
                     sum++
-                    break
                 }
             }
         }
         t1 := time.Now().Sub(t0)
         t_total += t1
 	}
-    return float64(t_total)/float64(sample_size)
+    //fmt.Printf("%d\n",sum)
+    return float64(t_total)/float64(sample_size), sum
 }
 func main() {
-    var key_len, value_len int = 100, 10
-    var x_step = 10
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
-    fmt.Printf("%g nanoseconds\n", key_value_time(key_len, value_len))
-    key_len, value_len = key_len + x_step, value_len + x_step
+    var key_len, value_len int = 100, 100
+    time_start := time.Now()
+
+    for x:=10; x<90000000; x+=10 {
+        timeS, _:= key_value_time(key_len, value_len)
+        key_len, value_len = key_len + x, value_len + x
+        //fmt.Printf("%g nanoseconds\n", timeNS)
+        //fmt.Printf("%d sum\n", sum)
+        //fmt.Printf("%d %g\n", sum, time)
+        //fmt.Printf("%d %g\n", value_len, time)
+        fmt.Printf("%d %f\n", value_len, timeS)
+
+        if time.Since(time_start).Seconds() >= 60 {
+            break
+        }
+    }
 }
 
 

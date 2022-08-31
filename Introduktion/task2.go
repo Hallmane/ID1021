@@ -8,7 +8,6 @@ import (
 
 func key_value_time(key_len int, value_len int) (float64){
 	var (
-        //total time.Duration
         keys = make([]int, key_len)
         values = make([]int, value_len)
         sum int = 0
