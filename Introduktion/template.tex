@@ -2,7 +2,7 @@
 
 \usepackage[utf8]{inputenc}
 
-\usepackage{listings}
+\usepackage{lstlistings}
 \usepackage{color}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
@@ -10,7 +10,7 @@
 \definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
-  language=Java,
+  language=Go,
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
@@ -20,7 +20,6 @@
   breakatwhitespace=true,
   tabsize=3
 }
-
 
 
 \begin{document}
@@ -34,6 +33,20 @@
 \maketitle
 
 \section*{Introduction}
+For the first task in problem set 1, we were tasked with benchmarking the access times on 
+arrays with growing size. 
+
+\begin{lstlisting}{Go}
+for (int i = 0; i < 100; i++){
+  sum += i;
+}
+for i := 0; i < loops; i++ {
+  t0 := time.Now()
+  sum += slice[r4nd]
+  total += time.Now().Sub(t0)
+  r4nd = rand.Intn(n)
+}
+\end{lstlisting}
 
 This is what a report should look like, vanilla \LaTeX with regular
 page width and height and single spaced lines. 
