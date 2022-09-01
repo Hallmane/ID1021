@@ -1,26 +1,11 @@
 /*
-	RPN stack
-	4 |   ||   ||   ||   ||   ||   |
-	3 |   ||   ||   ||   ||   ||   |
-	2 |   || 3 || 3 ||   ||10 ||   |
-	1 | 3 || 3 || 7 ||10 || 6 ||60 |  <-- display
-	    3   [e]   7    +    6    *
+RPN stack
+4 |   ||   ||   ||   ||   ||   |
+3 |   ||   ||   ||   ||   ||   |
+2 |   || 3 || 3 ||   ||10 ||   |
+1 | 3 || 3 || 7 ||10 || 6 ||60 |  <-- display
 
-	hp35 € {
-	    instruction array (RPN) <- type Item structA
-	    instruction pointer
-	    stack                   <- .Push()/.Pop()
-	}
-
-	func run (s *Stack) {
-	    for ip < instruction_array.Length()
-	        s.step()
-	    }
-	}
-
-defer for stack?
-
-*
+	3   [e]   7    +    6    *
 */
 package main
 
@@ -47,36 +32,65 @@ func makeItem(item_type Item_type, item_value int) Item {
 	return Item{item_type, item_value}
 }
 
-type Static_stack struct {
+type staticStack struct {
 	stack_capacity int
 	stack          []int
 	stack_pointer  int
+	stackDynamic   bool
 }
 
 type Calculator struct {
 	instruction_array []Item
-	s_stack           Static_stack
+	s_stack           staticStack
 	ins_pointer       int
 }
 
-func makeCalculator(instructions []Item, stack Static_stack) Calculator {
+func makeCalculator(instructions []Item, stack staticStack) Calculator {
 	return Calculator{instructions, stack, 0}
 }
 
-func makeStaticStack(stack_capacity int) Static_stack {
-	return Static_stack{stack_capacity, make([]int, stack_capacity), 0}
+func makeStaticStack(stack_capacity int) staticStack {
+	return staticStack{stack_capacity, make([]int, stack_capacity), 0, false}
 }
 
-func (s *Static_stack) Push(new_value int) {
-	if s.stack_pointer < s.stack_capacity {
+func (s *staticStack) Push(new_value int) {
+	if s.stack_pointer == s.stack_capacity {
+		s.stack = s.expandDong()
+		//fmt.Printf("STACK POINTER %d\n ", s.stack_pointer)
+		//panic("push sheiße\n")
+	} else {
 		s.stack[s.stack_pointer] = new_value
 		s.stack_pointer++
-	} else {
-		panic("sheiße\n")
+		//fmt.Printf("CAP %d\n ", s.stack_capacity)
 	}
 }
 
-func (s *Static_stack) Pop() int {
+//func (s *staticStack) Push(new_value int) {
+//	if s.stack_pointer < s.stack_capacity {
+//		s.stack[s.stack_pointer] = new_value
+//		s.stack_pointer++
+//	} else {
+//		s.stack = s.expandDong()
+//		panic("push sheiße\n")
+//	}
+//}
+
+func (stack *staticStack) expandDong() []int {
+	newStack := make([]int, (stack.stack_capacity * 3 / 2))
+	copy(newStack, stack.stack)
+	stack.stack_capacity = len(newStack)
+	return newStack
+}
+
+// logic for this stack
+func (stack *staticStack) reduceDong() []int {
+	newStack := make([]int, stack.stack_capacity*2)
+	copy(newStack, stack.stack)
+	stack.stack_capacity = len(newStack)
+	return newStack
+}
+
+func (s *staticStack) Pop() int {
 	if s.stack_pointer > 0 {
 		s.stack_pointer--
 		return s.stack[s.stack_pointer]
@@ -99,7 +113,7 @@ func (calc *Calculator) Step() {
 	switch next_item.item_type {
 	case ADD:
 		{
-			fmt.Println("add")
+			//fmt.Println("add")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a + val_b)
@@ -107,7 +121,7 @@ func (calc *Calculator) Step() {
 		}
 	case SUB:
 		{
-			fmt.Println("sub")
+			//fmt.Println("sub")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a - val_b)
@@ -115,7 +129,7 @@ func (calc *Calculator) Step() {
 		}
 	case MUL:
 		{
-			fmt.Println("mul")
+			//fmt.Println("mul")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a * val_b)
@@ -123,7 +137,7 @@ func (calc *Calculator) Step() {
 		}
 	case DIV:
 		{
-			fmt.Println("div")
+			//fmt.Println("div")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a / val_b)
@@ -142,10 +156,14 @@ func main() {
 	item1 := makeItem(VAL, 3)
 	item2 := makeItem(VAL, 10)
 	item3 := makeItem(VAL, 6)
-	item4 := makeItem(ADD, 0)
-	item5 := makeItem(ADD, 0)
+	item4 := makeItem(VAL, 7)
+	item5 := makeItem(VAL, 8)
+	item6 := makeItem(VAL, 9)
+	item7 := makeItem(ADD, 0)
+	item8 := makeItem(ADD, 0)
+	item9 := makeItem(ADD, 0)
 
-	instructions := []Item{item1, item2, item3, item4, item5}
+	instructions := []Item{item1, item2, item3, item4, item5, item6, item7, item8, item8, item9}
 	stack1 := makeStaticStack(4)
 
 	calc := makeCalculator(instructions, stack1)
