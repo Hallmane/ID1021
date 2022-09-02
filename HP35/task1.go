@@ -11,6 +11,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 )
 
 type Item_type int
@@ -36,7 +37,8 @@ type staticStack struct {
 	stack_capacity int
 	stack          []int
 	stack_pointer  int
-	stackDynamic   bool
+	lastUpdated    int
+	dynamicSize    bool
 }
 
 type Calculator struct {
@@ -50,57 +52,59 @@ func makeCalculator(instructions []Item, stack staticStack) Calculator {
 }
 
 func makeStaticStack(stack_capacity int) staticStack {
-	return staticStack{stack_capacity, make([]int, stack_capacity), 0, false}
+	return staticStack{stack_capacity, make([]int, stack_capacity), 0, 0, false}
+}
+func makeDynamicStack(stack_capacity int) staticStack {
+	return staticStack{stack_capacity, make([]int, stack_capacity), 0, 0, true}
 }
 
 func (s *staticStack) Push(new_value int) {
-	if s.stack_pointer == s.stack_capacity {
+	if s.stack_pointer == s.stack_capacity && s.dynamicSize == true {
 		s.stack = s.expandDong()
-		//fmt.Printf("STACK POINTER %d\n ", s.stack_pointer)
-		//panic("push sheiße\n")
+		fmt.Printf("EXPAND DONG %d\n ", s.stack_pointer)
 	} else {
 		s.stack[s.stack_pointer] = new_value
 		s.stack_pointer++
-		//fmt.Printf("CAP %d\n ", s.stack_capacity)
+		fmt.Printf("Stack capacity: %d\n ", s.stack_capacity)
 	}
 }
-
-//func (s *staticStack) Push(new_value int) {
-//	if s.stack_pointer < s.stack_capacity {
-//		s.stack[s.stack_pointer] = new_value
-//		s.stack_pointer++
-//	} else {
-//		s.stack = s.expandDong()
-//		panic("push sheiße\n")
-//	}
-//}
-
-func (stack *staticStack) expandDong() []int {
-	newStack := make([]int, (stack.stack_capacity * 3 / 2))
-	copy(newStack, stack.stack)
-	stack.stack_capacity = len(newStack)
-	return newStack
-}
-
-// logic for this stack
-func (stack *staticStack) reduceDong() []int {
-	newStack := make([]int, stack.stack_capacity*2)
-	copy(newStack, stack.stack)
-	stack.stack_capacity = len(newStack)
-	return newStack
-}
-
 func (s *staticStack) Pop() int {
-	if s.stack_pointer > 0 {
+	if s.stack_pointer == -1 {
+		fmt.Printf("Please don't panic\n")
+		return s.stack[s.stack_pointer]
+		//panic("Underflow.\n")
+	} else {
+		if s.stack_pointer <= s.stack_capacity/3 && s.stack_capacity > 4 && s.lastUpdated > 5 {
+			s.reduceDong()
+			fmt.Printf("~reduce d0ng: %d\n ", s.stack_pointer)
+		}
 		s.stack_pointer--
 		return s.stack[s.stack_pointer]
-	} else {
-		panic("sheiße\n")
 	}
+}
+
+func (stack *staticStack) expandDong() []int {
+	newStack := make([]int, (stack.stack_capacity * 2))
+	copy(newStack, stack.stack)
+	stack.lastUpdated = 0
+	stack.stack_capacity = len(newStack)
+	return newStack
+}
+
+/*
+logic for this stack is not sound
+*/
+func (stack *staticStack) reduceDong() []int {
+	newStack := make([]int, stack.stack_capacity*2/3)
+	copy(newStack, stack.stack)
+	stack.stack_capacity = len(newStack)
+	stack.lastUpdated = 0
+	return newStack
 }
 
 func (calc Calculator) run() int {
 	for calc.ins_pointer < len(calc.instruction_array) {
+		fmt.Printf("instruction pointer: %d\n", calc.ins_pointer)
 		calc.Step()
 	}
 	return calc.s_stack.Pop()
@@ -108,12 +112,16 @@ func (calc Calculator) run() int {
 
 func (calc *Calculator) Step() {
 	next_item := calc.instruction_array[calc.ins_pointer]
+	fmt.Printf("next item: %d\n", next_item.item_type)
+	fmt.Printf("stack pointer: %d\n", calc.s_stack.stack_pointer)
+	calc.s_stack.lastUpdated++
 	calc.ins_pointer++
+	fmt.Printf("\n")
 
 	switch next_item.item_type {
 	case ADD:
 		{
-			//fmt.Println("add")
+			fmt.Println("add")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a + val_b)
@@ -121,7 +129,7 @@ func (calc *Calculator) Step() {
 		}
 	case SUB:
 		{
-			//fmt.Println("sub")
+			fmt.Println("sub")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a - val_b)
@@ -129,7 +137,7 @@ func (calc *Calculator) Step() {
 		}
 	case MUL:
 		{
-			//fmt.Println("mul")
+			fmt.Println("mul")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a * val_b)
@@ -137,7 +145,7 @@ func (calc *Calculator) Step() {
 		}
 	case DIV:
 		{
-			//fmt.Println("div")
+			fmt.Println("div")
 			val_b := calc.s_stack.Pop()
 			val_a := calc.s_stack.Pop()
 			calc.s_stack.Push(val_a / val_b)
@@ -145,7 +153,7 @@ func (calc *Calculator) Step() {
 		}
 	case VAL:
 		{
-			fmt.Println(next_item.item_value)
+			fmt.Printf("Value added: %d\n", next_item.item_value)
 			calc.s_stack.Push(next_item.item_value)
 			break
 		}
@@ -153,19 +161,45 @@ func (calc *Calculator) Step() {
 }
 
 func main() {
-	item1 := makeItem(VAL, 3)
-	item2 := makeItem(VAL, 10)
-	item3 := makeItem(VAL, 6)
-	item4 := makeItem(VAL, 7)
-	item5 := makeItem(VAL, 8)
-	item6 := makeItem(VAL, 9)
-	item7 := makeItem(ADD, 0)
-	item8 := makeItem(ADD, 0)
-	item9 := makeItem(ADD, 0)
 
-	instructions := []Item{item1, item2, item3, item4, item5, item6, item7, item8, item8, item9}
-	stack1 := makeStaticStack(4)
+	// create moar data
+	item1 := makeItem(VAL, 1)
+	item2 := makeItem(VAL, 2)
+	item3 := makeItem(VAL, 3)
+	item4 := makeItem(VAL, 4)
+	item5 := makeItem(VAL, 5)
+	item6 := makeItem(VAL, 6)
+	item7 := makeItem(VAL, 7)
+	item8 := makeItem(VAL, 8)
+	item9 := makeItem(VAL, 9)
+	item10 := makeItem(VAL, 9)
+	item11 := makeItem(ADD, 0)
+	item12 := makeItem(VAL, 9)
+	item13 := makeItem(ADD, 0)
+	item14 := makeItem(VAL, 9)
+	item15 := makeItem(ADD, 0)
+	item16 := makeItem(VAL, 9)
+	item17 := makeItem(ADD, 0)
+	item18 := makeItem(ADD, 0)
+	item19 := makeItem(ADD, 0)
+	item20 := makeItem(ADD, 0)
+	item21 := makeItem(ADD, 0)
+	item22 := makeItem(ADD, 0)
 
-	calc := makeCalculator(instructions, stack1)
-	fmt.Printf("%d\n", calc.run())
+	instructions := []Item{item1, item2, item3, item4, item5, item6, item7, item8, item9, item10,
+		item11, item12, item13, item14, item15, item16, item17, item18, item19, item20, item21,
+		item22}
+	stack1 := makeStaticStack(16)
+	stack2 := makeDynamicStack(4)
+	calc1 := makeCalculator(instructions, stack1)
+	calc2 := makeCalculator(instructions, stack2)
+
+	t0 := time.Now()
+	fmt.Printf("%d\n", calc1.run())
+	t1 := time.Now().Sub(t0)
+	t2 := time.Now()
+	fmt.Printf("%d\n", calc2.run())
+	t3 := time.Now().Sub(t2)
+
+	fmt.Printf("Static array time: %d µs\n Dynamic array time: %d µs\n", t1.Microseconds(), t3.Microseconds())
 }
