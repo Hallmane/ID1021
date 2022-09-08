@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 )
@@ -23,7 +22,7 @@ func searchArrayZeroToKey(array []int, key int) bool {
 			return true
 		}
 		if array[i] > key {
-			break
+			continue
 		}
 	}
 	return false
@@ -31,9 +30,9 @@ func searchArrayZeroToKey(array []int, key int) bool {
 
 func binarySearch(array []int, key int) bool {
 
-	bot := 0
-	top := len(array) - 1
-	mid := (top - bot) / 2
+	var bot = 0
+	var top = len(array) - 1
+	var mid = (top - bot) / 2
 
 	for {
 		if array[mid] == key {
@@ -54,16 +53,6 @@ func binarySearch(array []int, key int) bool {
 
 }
 
-//	func oldgenerateUnsortedArray(size int) []int {
-//		array := make([]int, size)
-//
-//		for i := 0; i < size; i++ {
-//			array[i] = rand.Intn(size - 1)
-//			//fmt.Printf("[%d], ", array[i])
-//		}
-//		return array
-//	}
-
 func generateUnsortedArray(size int) []int {
 	return rand.Perm(size - 1)
 }
@@ -77,12 +66,12 @@ func generateSortedArray(size int) []int {
 	return array
 }
 
-// Benchmarking function for arrays of size arraySize
-func unsortedArrayAggregator(arraySize int, runs int64, key int, values []int) ([]time.Duration, int64, []int) {
+// Benchmarking function for unsorted arrays
+func unsortedArrayAggregator(arraySize int, runs int64, key int, values []int) ([]time.Duration, int64) {
 
 	lapTimes := make([]time.Duration, runs)
 	var averageTime time.Duration
-	keys := make([]int, arraySize)
+	//keys := make([]int, arraySize)
 
 	for i := 0; int64(i) < runs; i++ {
 		t0 := time.Now()
@@ -92,17 +81,19 @@ func unsortedArrayAggregator(arraySize int, runs int64, key int, values []int) (
 
 		lapTimes[i] = t1
 		averageTime += t1
-		keys[i] = key
+		//keys[i] = key
 
 		rand.Seed(time.Now().UTC().UnixNano())
 	}
-	return lapTimes, int64(averageTime.Nanoseconds() / runs), keys
+	return lapTimes, int64(averageTime.Nanoseconds() / runs)
 }
-func sortedArrayAggregator(arraySize int, runs int64, key int, values []int) ([]time.Duration, int64, []int) {
+
+// Benchmarking function for sorted arrays
+func sortedArrayAggregator(arraySize int, runs int64, key int, values []int) ([]time.Duration, int64) {
 
 	lapTimes := make([]time.Duration, runs)
 	var averageTime time.Duration
-	keys := make([]int, arraySize)
+	//keys := make([]int, arraySize)
 
 	for i := 0; int64(i) < runs; i++ {
 
@@ -113,18 +104,20 @@ func sortedArrayAggregator(arraySize int, runs int64, key int, values []int) ([]
 
 		lapTimes[i] = t1
 		averageTime += t1
-		keys[i] = key
+		//keys[i] = key
 
 		rand.Seed(time.Now().UTC().UnixNano())
 
 	}
-	return lapTimes, int64(averageTime.Nanoseconds() / runs), keys
+	return lapTimes, int64(averageTime.Nanoseconds() / runs)
 }
-func binarySearchArrayAggregator(arraySize int, runs int64, key int, values []int) ([]time.Duration, int64, []int) {
+
+// Benchmarking function for binary search
+func binarySearchArrayAggregator(arraySize int, runs int64, key int, values []int) ([]time.Duration, int64) {
 
 	lapTimes := make([]time.Duration, runs)
 	var averageTime time.Duration
-	keys := make([]int, arraySize)
+	//keys := make([]int, arraySize)
 
 	for i := 0; int64(i) < runs; i++ {
 
@@ -135,47 +128,30 @@ func binarySearchArrayAggregator(arraySize int, runs int64, key int, values []in
 
 		lapTimes[i] = t1
 		averageTime += t1
-		keys[i] = key
+		//keys[i] = key
 
 		rand.Seed(time.Now().UTC().UnixNano())
 
 	}
-	return lapTimes, int64(averageTime.Nanoseconds() / runs), keys
+	return lapTimes, int64(averageTime.Nanoseconds() / runs)
 }
 
 func main() {
+	arraySize := 10000
+
+	runs := int64(100)
 
 	rand.Seed(time.Now().UTC().UnixNano())
-	runs := int64(1000)
-	sizeOfArray := 16000000
-	key := rand.Intn(sizeOfArray)
+	key := rand.Intn(arraySize * arraySize)
+	sortedArray := generateSortedArray(arraySize)
+	_, avgTime := binarySearchArrayAggregator(arraySize, runs, key, sortedArray)
+	writeDatShit("BBBBBBBBBBBBBinsortedArraySearch", arraySize, int(avgTime))
 
-	//arrayUnsorted := generateUnsortedArray(sizeOfArray)
-	arraySorted := generateSortedArray(sizeOfArray)
-
-	//for k, v := range array {
-	//	fmt.Printf("[index: %d | value: %d]\n", k, v)
+	//for arrSize := 32; arrSize < 1600; arrSize = arrSize * 2 {
+	//	rand.Seed(time.Now().UTC().UnixNano())
+	//	key := rand.Intn(arrSize * arrSize)
+	//	sortedArray := generateSortedArray(arrSize)
+	//	_, avgTime := binarySearchArrayAggregator(arrSize, runs, key, sortedArray)
+	//	writeDatShit("BBBBBBBBBBBBBinsortedArraySearch", arrSize, int(avgTime))
 	//}
-	//fmt.Printf("%d\n", key)
-	//searchArrayZeroToKey(array, key)
-
-	//testUnsorted, avgUnsorted, keysUnsorted := unsortedArrayAggregator(sizeOfArray, runs, key, arrayUnsorted)
-	//_, avgUnsorted, _ := unsortedArrayAggregator(sizeOfArray, runs, key, arrayUnsorted)
-	//testSorted, avgSorted, keysSorted := sortedArrayAggregator(sizeOfArray, runs, key, arraySorted)
-	_, avgSorted, _ := binarySearchArrayAggregator(sizeOfArray, runs, key, arraySorted)
-
-	//fmt.Printf("________unsorted array________\n")
-	//for k, v := range testUnsorted {
-	//	fmt.Printf("Key[%d] found after %s\n", keysUnsorted[k], v)
-	//}
-	//fmt.Printf("For an array with size %d, the average duration for %d runs was %dns\n", sizeOfArray, runs, avgUnsorted)
-	//fmt.Printf("_______________________________________________\n")
-
-	//for k, v := range testSorted {
-	//	fmt.Printf("Key[%d] found after %s\n", keysSorted[k], v)
-	//}
-	fmt.Printf("For a sorted array with size %d, the average duration for %d runs was %dns\n", sizeOfArray, runs, avgSorted)
-	fmt.Printf("________________________END____________________________\n")
-	//fmt.Printf("For an unsorted array with size %d, the average duration for %d runs was %dns\n", sizeOfArray, runs, avgUnsorted)
-	//fmt.Printf("________________________END____________________________\n")
 }
