@@ -77,11 +77,9 @@ func generateSortedArray(size int) ([]int, int) {
 		large[randIndex[count]] = 0
 	}
 
-	for i, j := 0, 0; i < len(large); i, j = i+1, j+1 {
+	for i, j := 0, 0; i < len(smol)-1; i, j = i+1, j+1 {
 		for large[j] == 0 {
 			j++
-			fmt.Printf("%d\t%d\n \n___\n", j, large[j])
-			continue
 		}
 		smol[i] = large[j]
 	}
@@ -160,6 +158,8 @@ func findDuplicatesBinarySearch(runs int, alpha []int, beta []int) (int, []time.
 			clockedTimes[i] = t1
 			duplicates++
 		} else {
+			t1 := time.Now().Sub(t0)
+			clockedTimes[i] = t1
 			continue
 		}
 	}
@@ -170,25 +170,23 @@ func main() {
 	rand.Seed(time.Now().UTC().UnixNano())
 
 	runs := 1
-	arraySize := 100000000
+	//arraySize := 100000
+	for arrSize := 100; arrSize < 16000000; arrSize += 25000 {
+		alpha, _ := generateSortedArray(arrSize)
+		rand.Seed(time.Now().UTC().UnixNano())
+		beta, _ := generateSortedArray(arrSize)
+		_, clockedTimes := findDuplicatesBinarySearch(runs, alpha, beta)
 
-	alpha, _ := generateSortedArray(arraySize)
-	rand.Seed(time.Now().UTC().UnixNano())
-	beta, _ := generateSortedArray(arraySize)
+		sort.Slice(clockedTimes, func(i, j int) bool { // sorting the times to be able to get median
+			return clockedTimes[i] < clockedTimes[j]
+		})
 
-	duplicates, clockedTimes := findDuplicatesBinarySearch(runs, alpha, beta)
+		fmt.Printf("array length: %d \nAverage duration to locate key: %dns\n", arrSize, clockedTimes[arrSize/2])
+		//writeDatShit("doublyBinaryWhammy", arrSize, int(clockedTimes[arrSize/2]))
+	}
 
-	sort.Slice(clockedTimes, func(i, j int) bool { // sorting the times to be able to get median
-		return clockedTimes[i] < clockedTimes[j]
-	})
+	//fmt.Printf("%d duplicates\narray length: %d \nratio: %d\nAverage duration to locate key: %dns\n", duplicates, arraySize, (arraySize)/duplicates, clockedTimes[arraySize/2])
 
-	fmt.Printf("%d duplicates\narray length: %d \nratio: %d\nAverage duration to locate key: %d\n", duplicates, arraySize, (arraySize)/duplicates, clockedTimes[arraySize/2])
-
-	//
-	//
-	//
-	//
-	//
 	//            // a first try// 			//
 	//runs := int64(10)
 	//for arrSize := 100; arrSize < 16000000; arrSize += 25000 {
