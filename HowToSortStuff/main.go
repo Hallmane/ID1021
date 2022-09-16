@@ -19,7 +19,6 @@ func selectionSort(arr []int) []int {
 
 		for j := i + 1; j < len(arr); j++ {
 			if arr[j] < arr[smallest] {
-				fmt.Printf("switched %d with the smaller %d\n", arr[smallest], arr[j])
 				smallest = j
 			}
 		}
@@ -30,7 +29,6 @@ func selectionSort(arr []int) []int {
 		}
 	}
 	return arr
-	//sortedarray := selectionSort(randArrayGen(100000))
 }
 
 func insertooor(arr []int) []int {
@@ -87,22 +85,50 @@ func mörge(arra []int, arrb []int) []int {
 	return fffinalll
 }
 
+func timer(array_size int, which int) time.Duration {
+	unsortedArray := randArrayGen(array_size)
+
+	var t1 time.Duration
+
+	if which == 1 {
+		t0 := time.Now()
+		selectionSort(unsortedArray)
+		t1 = time.Now().Sub(t0)
+		writeDatShit("selection_sort_1", array_size, int(t1))
+	}
+	if which == 2 {
+		t0 := time.Now()
+		insertooor(unsortedArray)
+		t1 = time.Now().Sub(t0)
+		writeDatShit("insertion_sort_1", array_size, int(t1))
+	}
+	if which == 3 {
+		t0 := time.Now()
+		mergeSort(unsortedArray)
+		t1 = time.Now().Sub(t0)
+		writeDatShit("merge_sort_3", array_size, int(t1))
+	}
+	return t1
+}
+
+func bencher(loop_incrementer int) []time.Duration {
+	res := make([]time.Duration, 1000)
+	for i := 1000; i < 1_000_000; i += loop_incrementer {
+		timer(i, 3) //ugly
+	}
+	for i := range res {
+		fmt.Printf("Time: %d\n", i)
+	}
+
+	return res
+}
+
 func main() {
+	//array_size := 1000
+	//which_algo := 1
+	//result := timer(array_size, which_algo)
 
-	unsortedArray := randArrayGen(1000)
-	fmt.Print("[")
-	for i := range unsortedArray {
-		fmt.Printf("%d ", unsortedArray[i])
-	}
-	fmt.Println("]\n")
+	bencher(1000)
+	//fmt.Printf("Time (size %d): %d\n", array_size, result)
 
-	//sortedarray := insertooor(unsortedArray)
-	//sortedarray := selectionSort(unsortedArray)
-	sortedarray := mergeSort(unsortedArray)
-
-	fmt.Print("[")
-	for i := range sortedarray {
-		fmt.Printf("%d ", sortedarray[i])
-	}
-	fmt.Println("]")
 }
