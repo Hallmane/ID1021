@@ -19,49 +19,64 @@ type linkedList struct {
 
 func main() {
 
-	l := linkedList{}
-	l.append_node(1)
-	l.append_node(2)
-	l.append_node(3)
-	l.append_node(4)
-	l.append_node(5)
-	l.append_node(6)
-	l.append_node(7)
-	l.append_node(8)
-	l.append_node(9)
-	fmt.Print(l)
-	fmt.Print(l.get_node(7).data)
-	l.remove_node(7)
-	fmt.Print(l)
+	//times := l.append_timer(100)
+	//fmt.Print(l)
+	//fmt.Printf("\nlinked list: %d, array %d\n", times[0], times[1])
+
+	listA := make_linked_list(10)
+	listB := make_linked_list(10)
+	fmt.Print(listA)
+	listA.append_node(listB.head.data)
+	fmt.Print(listA)
+	fmt.Printf("\n")
+
 }
 
-// takes a linked list and appends varying amounts of elements
-//
-//	This is for comparing arrays with linked lists
-func (ll *linkedList) append_timer(amount_elements int) []time.Duration {
+func make_linked_list(size int) linkedList {
+	ll := linkedList{}
+	node := new(node)
+	node.data = 1337
+	for i := 0; i < size; i++ {
+		ll.append_node(i)
+	}
+	return ll
+}
+
+func append_arrays_and_time(amount_elements int) []time.Duration {
 	times := make([]time.Duration, 2)
-	data_to_add := rand.Intn(1000)
-	ll_elems, arr_elems := amount_elements, amount_elements
+
+	first_list := make_linked_list(amount_elements)
+	second_list := make_linked_list(1000)
 
 	t0 := time.Now()
-	for ; amount_elements > 0; amount_elements-- {
-		ll.append_node(data_to_add)
-	}
-	times[0] = time.Now().Sub(t0)
+	first_list.append_node(second_list.head.data)
+	times[0] = time.Since(t0)
 
 	arr := make([]int, ll.size)
 	t0 = time.Now()
 	arr_newlen := make([]int, len(arr)+amount_elements)
-	for i := 0; i < len(arr_newlen); i++ {
 
+	for i := 0; i < len(arr)-1; i++ {
+		arr_newlen[i] = arr[i]
+	}
+	for j := 0; j < amount_elements; j++ {
+		arr_newlen[j] = data_to_add
+		fmt.Printf("%d\n", arr_newlen[j])
+	}
+	times[1] = time.Since(t0)
+
+	for i := range arr_newlen {
+		fmt.Printf("%d\n", arr_newlen[i])
 	}
 
-}
+	return times
+
+// takes a linked list and appends varying amounts of elements
 
 func (ll *linkedList) append_node(data int) {
 	newNode := new(node)
 	newNode.data = data
-	//newNode.next = nil // by defualt nil
+	//newNode.next = nil
 
 	if ll.head == nil {
 		ll.head = newNode
