@@ -23,7 +23,6 @@ type linkedList struct {
 }
 
 func main() {
-
 	benchmarker(100_000)
 }
 
