@@ -2,9 +2,16 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 )
+
+type ByDuration []time.Duration
+
+func (a ByDuration) Len() int           { return len(a) }
+func (a ByDuration) Less(i, j int) bool { return a[i].Nanoseconds() < a[j].Nanoseconds() }
+func (a ByDuration) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 
 type node struct {
 	data int
@@ -15,78 +22,70 @@ type linkedList struct {
 	head *node
 }
 
-type benchmark struct {
-	times []time.Duration
-}
-
 func main() {
 
-	//times := l.append_timer(100)
-	//fmt.Print(l)
-
-	//listA := make_linked_list(10)
-	//listB := make_linked_list(10)
-	//fmt.Print(listA)
-	//listA.append_node(listB.head.data)
-	//fmt.Print(listA)
-	//fmt.Printf("\n")
-
-	//times_task_1 := append_arrays_task_1(100000)
-	//fmt.Printf("\nlinked list: %d, array %d\n", times_task_1[0], times_task_1[1])
-	//times_task_2 := append_arrays_task_2(100000)
-	//fmt.Printf("\nlinked list: %d, array %d\n", times_task_2[0], times_task_2[1])
-
-	//fmt.Printf("\nlinked list: %d, array %d\n", times[0], times[1])
-	//fmt.Printf("benchmarkscores: %d\n", bs_scores)
-	benchmarker()
-
+	benchmarker(100_000)
 }
 
-func benchmarker() {
-	max_size := 100_000
-	for j, i := 0, 1; i < max_size; i, j = i+50, j+1 {
-		for t1, t2 := range append_arrays_task_1(i) {
-			fmt.Printf("[%d, %d]\n", t1, t2)
-		}
-		//fmt.Printf("%d\n", bs_scores[i])
+// writes median times of linked list and arrays to individual files
+func benchmarker(max_size int) {
+	go array_benchmarker(max_size)
+	linked_list_benchmarker(max_size)
+}
+
+func linked_list_benchmarker(max_size int) {
+	for i := 50; i < max_size; i += 100 {
+		writeDatShit("linkedListBenchmark", i, linked_list_for_each_size(i))
 	}
-
 }
 
-func make_linked_list(size int) linkedList {
-	ll := linkedList{}
-	data_to_add := 1337357
-	for i := 0; i < size; i++ {
-		ll.append_node(data_to_add)
+func array_benchmarker(max_size int) {
+	for i := 50; i < max_size; i += 100 {
+		writeDatShit("arrayBenchmarker", i, arrays_for_each_size(i))
 	}
-	return ll
 }
-func append_arrays_task_1(amount_elements int) []time.Duration {
-	times := make([]time.Duration, 2)
 
-	//____linked lists____//
+// ____linked lists____//
+func linked_list_for_each_size(amount_elements int) time.Duration {
+	times_per_i := make([]time.Duration, 3)
+
 	first_list := make_linked_list(1000)
-	second_list := make_linked_list(amount_elements) // vary this
-	t0 := time.Now()
-	first_list.append_node(second_list.head.data)
-	times[0] = time.Since(t0)
-
-	//____arrays____//
-	arr := make([]int, amount_elements)
-	data_to_add := 8008135
-	t0 = time.Now()
-	arr_newlen := make([]int, len(arr)+amount_elements)
-
-	for i := 0; i < len(arr)-1; i++ {
-		arr_newlen[i] = arr[i]
+	second_list := make_linked_list(amount_elements)
+	for i := 0; i < 3; i++ {
+		t0 := time.Now()
+		first_list.append_node(second_list.head.data)
+		times_per_i[i] = time.Since(t0)
 	}
-	for j := 0; j < amount_elements-1; j++ {
-		arr_newlen[j] = data_to_add
-	}
-	times[1] = time.Since(t0)
+	sort.Sort(ByDuration(times_per_i))
+	return times_per_i[1]
 
-	return times
 }
+
+// ____arrays____//
+func arrays_for_each_size(amount_elements int) time.Duration {
+	times_per_i := make([]time.Duration, 100)
+	data_to_add := 8008135
+
+	for k := 0; k < 100; k++ {
+		arr := make([]int, amount_elements)
+		t0 := time.Now()
+		arr_newlen := make([]int, len(arr)+amount_elements)
+
+		for i := 0; i < len(arr)-1; i++ {
+			arr_newlen[i] = arr[i]
+		}
+		for j := 0; j < amount_elements-1; j++ {
+			arr_newlen[j] = data_to_add
+		}
+		times_per_i[k] = time.Since(t0)
+	}
+
+	sort.Sort(ByDuration(times_per_i))
+	return times_per_i[50]
+
+}
+
+// old
 func append_arrays_task_2(amount_elements int) []time.Duration {
 	times := make([]time.Duration, 2)
 
@@ -114,8 +113,16 @@ func append_arrays_task_2(amount_elements int) []time.Duration {
 	return times
 }
 
-// takes a linked list and appends varying amounts of elements
+func make_linked_list(size int) linkedList {
+	ll := linkedList{}
+	data_to_add := 1337357
+	for i := 0; i < size; i++ {
+		ll.append_node(data_to_add)
+	}
+	return ll
+}
 
+// takes a linked list and appends varying amounts of elements
 func (ll *linkedList) append_node(data int) {
 	newNode := new(node)
 	newNode.data = data

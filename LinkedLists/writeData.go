@@ -5,9 +5,10 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
-func writeDatShit(fileName string, arraySize int, time int) {
+func writeDatShit(fileName string, arraySize int, time time.Duration) {
 	//fo, err := os.Create(fileName + ".dat")
 	fo, err := os.OpenFile(fileName+".dat", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
