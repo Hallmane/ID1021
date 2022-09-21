@@ -24,7 +24,37 @@ type linkedList struct {
 }
 
 func main() {
-	benchmarker(100_000)
+	ll := linkedList{}
+	ll.push(1337)
+	ll.push(2)
+	ll.push(3)
+	ll.push(4)
+	ll.push(5)
+	ll.push(6)
+	ll.push(7)
+	ll.push(8)
+	ll.push(9)
+	ll.push(10)
+	ll.push(11)
+	fmt.Print(ll)
+	ll.pop()
+	fmt.Println("")
+	fmt.Print(ll)
+	ll.pop()
+	fmt.Println("")
+	fmt.Print(ll)
+	ll.pop()
+	fmt.Println("")
+	fmt.Print(ll)
+	ll.pop()
+	fmt.Println("")
+	fmt.Print(ll)
+	ll.pop()
+	fmt.Println("")
+	fmt.Print(ll)
+	ll.pop()
+	fmt.Println("")
+	fmt.Print(ll)
 }
 
 // writes median times of linked list and arrays to individual files
@@ -110,6 +140,44 @@ func make_node(data int) node {
 	return node{data: data, next: nil}
 }
 
+func (ll *linkedList) pop() int {
+	var returnVal = ll.head.data
+
+	if ll.head.next != nil {
+		newHead := ll.head.next
+		returnVal := ll.head.data
+		ll.head = newHead
+		return returnVal
+	}
+	return returnVal
+}
+
+func (ll *linkedList) push(data int) {
+	newNode := new(node)
+	newNode.data = data
+
+	if ll.head == nil {
+		ll.head = newNode
+	} else {
+		oldNext := ll.head.next
+		ll.head.next = newNode
+		newNode.next = oldNext
+
+	}
+}
+
+func (ll *linkedList) remove_node(search_data int) {
+	var reti *node
+
+	for iter := ll.head; iter != nil; iter = iter.next {
+		if iter.data == search_data {
+			reti.next = iter.next
+			return
+		}
+		reti = iter
+	}
+}
+
 // takes a linked list and appends varying amounts of elements
 func (ll *linkedList) append_node(n node) {
 
@@ -144,18 +212,6 @@ func (ll linkedList) get_node(search_data int) *node {
 		}
 	}
 	return nil
-}
-
-func (ll *linkedList) remove_node(search_data int) {
-	var reti *node
-
-	for iter := ll.head; iter != nil; iter = iter.next {
-		if iter.data == search_data {
-			reti.next = iter.next
-			return
-		}
-		reti = iter
-	}
 }
 
 func (ll linkedList) String() string {
