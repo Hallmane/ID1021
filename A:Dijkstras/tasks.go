@@ -26,7 +26,11 @@ func dijkstra_test() {
 }
 
 func shoresh3_test() {
-	main_test3("Malmö", "Kiruna", 10000)
+	//main_test3("Malmö", "Kiruna", 10000)
+	//main_test3("Malmö", "Gällivare", 10000)
+	main_test3("Malmö", "Östersund", 10000)
+	main_test3("Malmö", "Sundsvall", 10000)
+	main_test3("Malmö", "Borlänge", 10000)
 }
 
 func test_csv_parser() {

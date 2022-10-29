@@ -5,12 +5,6 @@ type PrQueue struct {
 	nodes map[*City]int
 }
 
-// city has adjacency built in thanks to []connections
-type Path struct {
-	city        *City // name, []connections
-	travel_time int   //sum of weights
-}
-
 func (pq PrQueue) Len() int                { return len(pq.keys) }
 func (pq PrQueue) Empty() bool             { return len(pq.keys) == 0 }
 func (pq PrQueue) Less(p_A, p_B Path) bool { return p_A.travel_time < p_B.travel_time }
@@ -22,7 +16,7 @@ func (pq *PrQueue) Set(city *City, length int) {
 	pq.nodes[city] = length
 }
 func (pq *PrQueue) Get(key *City) (prio int, ok bool) {
-	prio, ok = pq.nodes[key]
+	prio, ok = pq.nodes[key] // this returns some weird int index of *City?
 	return
 }
 

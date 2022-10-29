@@ -2,7 +2,11 @@ package main
 
 func main() {
 
-	dijkstra_test()
+	//dijkstra_test()
+	dijkstra_speed("Malmö", "kiruna")
+
+	//malmo_Expanding()
+	shoresh3_test()
 
 	//test_csv_parser()
 	//test_city_string()
@@ -32,8 +36,5 @@ func main() {
 	//main_test2("Göteborg", "Umeå", 720) //
 	//main_test2("Umeå", "Göteborg", 720) //
 	//main_test2("Kiruna", "Malmö", 100000) //
-
-	//malmo_Expanding()
-	//shoresh3_test()
 
 }
