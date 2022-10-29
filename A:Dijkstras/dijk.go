@@ -5,18 +5,17 @@ type Path struct {
 	travel_time int   //sum of weights
 }
 
-func (m Map) dijkstra(start *City, end *City) (way []string, cost int) {
+// aint workin
+func (m Map) dijkstra(start, end *City) (way []string, path_time int) {
 
 	pq := newQueue()                // queue for cities to explore
 	explored := map[*City]bool{}    // cities visited
-	previous := make(map[int]*City) // the previous cities visited
+	previous := make(map[int]*City) // mapping of int->c
 	c_index := make(map[*City]int)  // mapping of c->int
-	//fmt.Println("A")
 
 	pq.Set(start, 0) // initial city
 
 	for !pq.Empty() {
-		//fmt.Println(pq.Len(), "PQ LEN", pq.keys[0])
 
 		// current next city in queue with its travel time
 		cur_city, time_sum := pq.Pop()
@@ -25,7 +24,7 @@ func (m Map) dijkstra(start *City, end *City) (way []string, cost int) {
 		path := Path{cur_city, time_sum}
 
 		if cur_city == end { // then back trace path
-			cost = path.travel_time
+			path_time = path.travel_time
 			//p_city := path.city
 
 			//for p_city != start {
@@ -57,9 +56,7 @@ func (m Map) dijkstra(start *City, end *City) (way []string, cost int) {
 			new_time := path.travel_time + conn.distance
 
 			if new_time < queue_time {
-				//fmt.Println(new_time, "<new_time, queue_time>", queue_time)
-				//if new_time < path.travel_time {
-				//fmt.Printf("new faster way %s -> %s\n", cur_city.name, conn.city.name)
+				///if new_time < path.travel_time {
 				previous[c_index[conn.city]] = conn.city
 				pq.Set(conn.city, new_time)
 			}
@@ -67,7 +64,6 @@ func (m Map) dijkstra(start *City, end *City) (way []string, cost int) {
 	}
 
 	way = append(way, start.name)
-	//fmt.Println("way___________________________________________", way)
 
 	for i, j := 0, len(way)-1; i < j; i, j = i+1, j-1 {
 		way[i], way[j] = way[j], way[i]

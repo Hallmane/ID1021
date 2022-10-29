@@ -25,7 +25,8 @@ func main_test3(c1 string, c2 string, max int) {
 	t0 := time.Now()
 	path := new_path()
 	dist := path.Shoresh3(map1.LookUp(c1), map1.LookUp(c2), max)
-	fmt.Printf("[%s -> %s] fastest trip: %d min [%d µs]\n", c1, c2, *dist, time.Since(t0).Microseconds())
+	t1 := time.Since(t0).Microseconds()
+	fmt.Printf("[%s -> %s] fastest trip: %d min [%d µs]\n", c1, c2, *dist, t1)
 }
 
 func dijkstra_speed(c1, c2 string) {
@@ -34,7 +35,7 @@ func dijkstra_speed(c1, c2 string) {
 	start := map1.LookUp(c1)
 	end := map1.LookUp(c2)
 	map1.dijkstra(start, end)
-	t1 := time.Since(t0)
+	t1 := time.Since(t0).Microseconds()
 	fmt.Printf("[%s -> %s] fastest trip: [fix] min [%d µs]\n", c1, c2, t1)
 
 }

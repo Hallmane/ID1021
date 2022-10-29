@@ -14,7 +14,7 @@ func malmo_Expanding() {
 	//main_test2("Malmö", "Östersund", 2000) //
 	//main_test2("Malmö", "Gällivare", 2000) //
 	//main_test2("Malmö", "Kiruna", 2000)    //
-	main_test2("Malmö", "Borlänge", 2000) //
+	//main_test2("Malmö", "Borlänge", 2000) //
 }
 
 func dijkstra_test() {
@@ -26,6 +26,18 @@ func dijkstra_test() {
 }
 
 func shoresh3_test() {
+	main_test3("Malmö", "Lund", 10000)
+	main_test3("Malmö", "Helsingborg", 10000)
+	main_test3("Malmö", "Kalmar", 10000)
+	main_test3("Malmö", "Norrköping", 10000)
+	main_test3("Malmö", "Södertälje", 10000)
+	main_test3("Malmö", "Stockholm", 10000)
+	main_test3("Malmö", "Gävle", 10000)
+	main_test3("Malmö", "Borlänge", 10000)
+	main_test3("Malmö", "Sundsvall", 10000)
+	main_test3("Malmö", "Östersund", 10000)
+	main_test3("Malmö", "Gällivare", 10000)
+	main_test3("Malmö", "kiruna", 10000)
 	//main_test3("Malmö", "Kiruna", 10000)
 	//main_test3("Malmö", "Gällivare", 10000)
 	main_test3("Malmö", "Östersund", 10000)

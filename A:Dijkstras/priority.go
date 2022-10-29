@@ -15,8 +15,9 @@ func (pq *PrQueue) Set(city *City, length int) {
 	}
 	pq.nodes[city] = length
 }
+
 func (pq *PrQueue) Get(key *City) (prio int, ok bool) {
-	prio, ok = pq.nodes[key] // this returns some weird int index of *City?
+	prio, ok = pq.nodes[key] // this returns some weird int index of *City
 	return
 }
 
@@ -29,7 +30,6 @@ func (pq *PrQueue) Pop() (key *City, prio int) {
 
 	delete(pq.nodes, key)
 	return key, prio
-
 }
 
 func makePath(city *City, time int) *Path {

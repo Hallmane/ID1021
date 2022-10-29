@@ -3,7 +3,19 @@ package main
 func main() {
 
 	//dijkstra_test()
-	dijkstra_speed("Malmö", "kiruna")
+
+	//dijkstra_speed("Malmö", "Lund")
+	//dijkstra_speed("Malmö", "Helsingborg")
+	//dijkstra_speed("Malmö", "Kalmar")
+	//dijkstra_speed("Malmö", "Norrköping")
+	//dijkstra_speed("Malmö", "Södertälje")
+	//dijkstra_speed("Malmö", "Stockholm")
+	//dijkstra_speed("Malmö", "Gävle")
+	//dijkstra_speed("Malmö", "Borlänge")
+	//dijkstra_speed("Malmö", "Sundsvall")
+	//dijkstra_speed("Malmö", "Östersund")
+	//dijkstra_speed("Malmö", "Gällivare")
+	//dijkstra_speed("Malmö", "kiruna")
 
 	//malmo_Expanding()
 	shoresh3_test()
